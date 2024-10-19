@@ -1,23 +1,30 @@
-import { resolve as _resolve } from 'path';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import nodeExternals from 'webpack-node-externals';
 
-export const entry = './src/index.ts';
-export const target = 'node';
-export const externals = [nodeExternals()];
-export const output = {
-    path: _resolve(__dirname, 'dist'),
+// Эти две строки заменяют __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
+  entry: './src/index.ts',
+  target: 'node',
+  externals: [nodeExternals()],
+  output: {
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    libraryTarget: 'commonjs2'
-};
-export const resolve = {
+    libraryTarget: 'commonjs2',  // Для Node.js
+  },
+  resolve: {
     extensions: ['.ts', '.js'],
-};
-export const module = {
+  },
+  module: {
     rules: [
-        {
-            test: /\.ts$/,
-            exclude: /node_modules/,
-            use: 'ts-loader',
-        }
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: 'ts-loader',
+      }
     ]
+  }
 };

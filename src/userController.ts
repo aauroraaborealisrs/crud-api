@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, validate as isUuidValid } from "uuid";
 
 type User = {
   id: string;
@@ -9,6 +9,15 @@ type User = {
 };
 
 let users: User[] = [];
+
+const validateUuid = (id: string, res: ServerResponse): boolean => {
+  if (!isUuidValid(id)) {
+    res.writeHead(400, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Invalid userId format" }));
+    return false;
+  }
+  return true;
+};
 
 export const getUsers = (req: IncomingMessage, res: ServerResponse) => {
   res.writeHead(200, { "Content-Type": "application/json" });
@@ -20,6 +29,8 @@ export const getUserById = (
   res: ServerResponse,
   id: string,
 ) => {
+  if (!validateUuid(id, res)) return;
+
   const user = users.find((u) => u.id === id);
 
   if (!user) {
@@ -43,7 +54,11 @@ export const createUser = (req: IncomingMessage, res: ServerResponse) => {
 
     if (!username || !age || !Array.isArray(hobbies)) {
       res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: "Invalid data" }));
+      res.end(
+        JSON.stringify({
+          message: "Invalid data: body does not contain required fields",
+        }),
+      );
       return;
     }
 
@@ -66,6 +81,8 @@ export const updateUser = (
   res: ServerResponse,
   id: string,
 ) => {
+  if (!validateUuid(id, res)) return;
+
   let body = "";
 
   req.on("data", (chunk) => {
@@ -100,6 +117,8 @@ export const deleteUser = (
   res: ServerResponse,
   id: string,
 ) => {
+  if (!validateUuid(id, res)) return;
+
   const userIndex = users.findIndex((u) => u.id === id);
 
   if (userIndex === -1) {

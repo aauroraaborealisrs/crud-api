@@ -18,21 +18,51 @@ export const router = (req: IncomingMessage, res: ServerResponse) => {
 
   const apiUrl = url.replace("/api", "");
 
-  if (method === "GET" && apiUrl === "/users") {
-    getUsers(req, res);
-  } else if (method === "POST" && apiUrl === "/users") {
-    createUser(req, res);
-  } else if (method === "GET" && apiUrl.startsWith("/users/")) {
-    const id = apiUrl.split("/")[2];
-    getUserById(req, res, id);
-  } else if (method === "PUT" && apiUrl.startsWith("/users/")) {
-    const id = apiUrl.split("/")[2];
-    updateUser(req, res, id);
-  } else if (method === "DELETE" && apiUrl.startsWith("/users/")) {
-    const id = apiUrl.split("/")[2];
-    deleteUser(req, res, id);
-  } else {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Route not found" }));
+  switch (method) {
+    case "GET":
+      if (apiUrl === "/users") {
+        getUsers(req, res);
+      } else if (apiUrl.startsWith("/users/")) {
+        const id = apiUrl.split("/")[2];
+        getUserById(req, res, id);
+      } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Route not found" }));
+      }
+      break;
+
+    case "POST":
+      if (apiUrl === "/users") {
+        createUser(req, res);
+      } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Route not found" }));
+      }
+      break;
+
+    case "PUT":
+      if (apiUrl.startsWith("/users/")) {
+        const id = apiUrl.split("/")[2];
+        updateUser(req, res, id);
+      } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Route not found" }));
+      }
+      break;
+
+    case "DELETE":
+      if (apiUrl.startsWith("/users/")) {
+        const id = apiUrl.split("/")[2];
+        deleteUser(req, res, id);
+      } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Route not found" }));
+      }
+      break;
+
+    default:
+      res.writeHead(405, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Method not allowed" }));
+      break;
   }
 };

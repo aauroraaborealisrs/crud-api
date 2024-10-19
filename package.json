@@ -4,6 +4,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3",
@@ -14,7 +15,8 @@
   "scripts": {
     "start:dev": "ts-node-dev --respawn src/index.ts",
     "build": "webpack --mode production",
-    "start:prod": "npm run build && node dist/bundle.js"
+    "start:prod": "npm run build && node dist/bundle.js",
+    "fix": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
     "uuid": "^10.0.0"

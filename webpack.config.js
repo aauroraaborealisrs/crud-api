@@ -2,7 +2,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import nodeExternals from 'webpack-node-externals';
 
-// Эти две строки заменяют __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -13,7 +12,7 @@ export default {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    libraryTarget: 'commonjs2',  // Для Node.js
+    libraryTarget: 'commonjs2',
   },
   resolve: {
     extensions: ['.ts', '.js'],

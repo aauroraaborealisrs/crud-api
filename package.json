@@ -23,7 +23,8 @@
     "build": "webpack --mode production",
     "start:prod": "npm run build && node dist/bundle.js",
     "fix": "prettier --write \"src/**/*.ts\"",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "start:multi": "ts-node src/cluster.ts"
   },
   "dependencies": {
     "uuid": "^10.0.0"

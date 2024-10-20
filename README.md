@@ -183,10 +183,32 @@ This will start a load balancer on port `4000` and distribute requests to worker
 
 ---
 
-### How to save these requests in Postman:
-1. **Create a new Collection** in Postman.
-2. Add each of the above requests to the collection.
-3. For each request, specify the correct method, URL, and body (if required).
-4. You can now send the requests and verify the responses!
+## Running Tests
 
-This will give you a complete set of Postman examples for interacting with your API!
+The repository includes unit tests for the CRUD API. These tests validate that the API behaves correctly for the following scenarios:
+
+- **GET all users**: Ensures that a `GET` request to `/api/users` returns all users.
+- **POST a new user**: Ensures that a `POST` request creates a new user and returns the created user.
+- **GET a specific user by `userId`**: Ensures that a `GET` request to `/api/users/:userId` returns the correct user.
+- **PUT update user**: Ensures that a `PUT` request updates the user and returns the updated user.
+- **DELETE a user**: Ensures that a `DELETE` request removes the user and returns a 204 status.
+
+### Running the tests
+
+To run the tests, use the following command:
+
+```bash
+npm run test
+```
+
+### Example test scenario
+
+Here is an example of how the tests are structured:
+
+1. **GET `/api/users`** should return an empty array if no users are present.
+2. **POST `/api/users`** should create a new user and return the newly created user.
+3. **GET `/api/users/:userId`** should return the user with the specified `userId`.
+4. **PUT `/api/users/:userId`** should update the user's information and return the updated user.
+5. **DELETE `/api/users/:userId`** should delete the user and return status 204.
+
+**Jest** is used as the testing framework, and the test cases cover basic CRUD operations.
